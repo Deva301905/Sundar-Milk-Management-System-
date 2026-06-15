@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/static/logo.png">
+    <title>Enterprise POS Terminal - Sundar Milk Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for an OS-native feel */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Toast Animation */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .toast-enter { animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 h-screen flex flex-col overflow-hidden select-none">
+
+    <header class="bg-white shadow-sm border-b border-gray-100 px-6 py-3 flex justify-between items-center z-20">
+        <div class="flex items-center gap-4">
+            <div class="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-500/20">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <div>
+                <h1 class="text-xl font-black text-gray-900 tracking-tight leading-none">Sundar Milk POS</h1>
+                <p class="text-xs font-bold text-green-500 flex items-center mt-1">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse mr-1"></span> TERMINAL ACTIVE
+                </p>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <div class="hidden lg:flex items-center space-x-3 mr-4 border-r border-gray-200 pr-4">
+                <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">F2: Cash</span>
+                <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">F3: UPI</span>
+                <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">Enter: Checkout</span>
+            </div>
+            
+            <span class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-bold font-mono tracking-widest shadow-inner" id="clock">00:00:00</span>
+            <button onclick="window.location.href='/'" class="px-4 py-2 bg-red-50 text-red-600 rounded-lg font-bold hover:bg-red-100 transition shadow-sm border border-red-100 flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Exit POS
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden relative">
+        
+        <main class="w-7/12 lg:w-8/12 flex flex-col bg-gray-100 relative">
+            
+            <div class="p-6 pb-2 z-10 bg-gradient-to-b from-gray-100 to-transparent">
+                <div class="relative shadow-sm group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="h-6 w-6 text-gray-400 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="text" id="productSearch" autocomplete="off" placeholder="Scan barcode or search product name..." class="block w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-white bg-white text-lg font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-blue-500 transition-all shadow-sm">
+                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                        <button id="clearSearchBtn" class="hidden text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
+                    <button class="px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-full shadow-sm">All Items</button>
+                    <button class="px-4 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold rounded-full shadow-sm transition">Milk Packets</button>
+                    <button class="px-4 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold rounded-full shadow-sm transition">Curd & Ghee</button>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 pt-2" id="productGridContainer">
+                <div id="productGrid" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-20">
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 h-32 animate-pulse"></div>
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 h-32 animate-pulse"></div>
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 h-32 animate-pulse"></div>
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 h-32 animate-pulse"></div>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-100 to-transparent pointer-events-none"></div>
+        </main>
+
+        <aside class="w-5/12 lg:w-4/12 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.05)] flex flex-col z-20 relative border-l border-gray-200">
+            
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-slate-50/50">
+                <h2 class="text-lg font-black text-slate-800 flex items-center">
+                    Current Order
+                    <span id="cartCountBadge" class="ml-2 bg-blue-100 text-blue-700 text-xs py-0.5 px-2 rounded-full hidden">0</span>
+                </h2>
+                <button id="clearCartBtn" class="text-xs font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    Clear
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto bg-white" id="cartContainer">
+                <table class="w-full text-left">
+                    <thead class="sticky top-0 bg-white/95 backdrop-blur z-10 border-b border-gray-100">
+                        <tr class="text-gray-400 text-[10px] uppercase tracking-wider">
+                            <th class="px-6 py-3 font-bold w-1/2">Item Details</th>
+                            <th class="px-2 py-3 font-bold text-center w-1/4">Qty</th>
+                            <th class="px-6 py-3 font-bold text-right w-1/4">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartBody" class="divide-y divide-gray-50">
+                        <tr>
+                            <td colspan="3" class="px-6 py-24 text-center">
+                                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4">
+                                    <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                                </div>
+                                <p class="text-gray-400 font-bold text-sm">Scan items to begin sale</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-white border-t border-gray-200 shadow-[0_-10px_20px_rgba(0,0,0,0.03)] z-20">
+                <div class="px-6 py-5 space-y-2">
+                    <div class="flex justify-between text-sm font-bold text-gray-400">
+                        <span>Subtotal</span>
+                        <span id="subtotalValue" class="text-gray-600">₹0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-bold text-gray-400 border-b border-gray-100 pb-3">
+                        <span>Tax / GST</span>
+                        <span class="text-gray-600">Included</span>
+                    </div>
+                    <div class="flex justify-between items-end pt-1">
+                        <span class="text-lg font-black text-gray-800">Grand Total</span>
+                        <span id="totalValue" class="text-4xl font-black text-green-500 tracking-tight">₹0.00</span>
+                    </div>
+                </div>
+
+                <div class="px-6 pb-4">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Select Payment Mode</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="payment-btn bg-blue-50 border-2 border-blue-500 text-blue-700 shadow-inner font-black py-4 rounded-xl hover:bg-blue-100 transition-all active:scale-95 flex flex-col items-center justify-center gap-1" data-method="Cash">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            CASH <span class="text-[9px] text-blue-400 font-bold bg-white/50 px-1 rounded absolute top-2 right-2 hidden lg:block">F2</span>
+                        </button>
+                        <button class="payment-btn bg-white border-2 border-gray-200 text-gray-500 font-black py-4 rounded-xl hover:bg-purple-50 hover:border-purple-300 hover:text-purple-600 transition-all active:scale-95 flex flex-col items-center justify-center gap-1 relative" data-method="UPI">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                            UPI / QR <span class="text-[9px] text-gray-300 font-bold bg-gray-50 px-1 rounded absolute top-2 right-2 hidden lg:block">F3</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="px-6 pb-6">
+                    <button id="checkoutBtn" class="w-full bg-slate-900 text-white font-black text-xl py-5 rounded-xl hover:bg-blue-600 shadow-xl shadow-blue-500/20 transition-all transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-slate-900 disabled:shadow-none flex items-center justify-center" disabled>
+                        <span>COMPLETE SALE</span>
+                        <span class="ml-2 bg-white/20 text-white text-[10px] px-2 py-1 rounded hidden lg:block">ENTER</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col gap-3 z-50 pointer-events-none"></div>
+
+    <script src="/static/js/pos.js"></script>
+</body>
+</html>

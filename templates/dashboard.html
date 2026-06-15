@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/static/logo.png">
+    <title>Enterprise Dashboard - Sundar Milk Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 h-screen flex overflow-hidden selection:bg-blue-200">
+
+    <div id="sidebarOverlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-20 hidden lg:hidden transition-opacity"></div>
+
+    <aside class="fixed inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 w-72 bg-slate-900 text-white flex flex-col transition-transform duration-300 z-30 shadow-2xl" id="sidebar">
+        
+        <div class="h-24 flex items-center px-6 border-b border-slate-800 bg-slate-950/50">
+            <img src="/static/logo.png" alt="Logo" class="h-12 w-12 object-contain rounded-xl mr-3 shadow-lg shadow-blue-500/20 bg-white p-1" onerror="this.outerHTML='<div class=\'h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center mr-3\'><svg class=\'w-7 h-7 text-white\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M13 10V3L4 14h7v7l9-11h-7z\'></path></svg></div>'">
+            <div>
+                <h1 class="text-xl font-black tracking-wider leading-tight">SUNDAR<span class="text-blue-400">MILK</span></h1>
+                <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Management System</p>
+            </div>
+            <button id="closeSidebarBtn" class="lg:hidden ml-auto text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        </div>
+
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="/" class="flex items-center px-4 py-3.5 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-600/30 transition-all group">
+                <svg class="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="font-bold">Command Center</span>
+            </a>
+            <a href="/pos" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
+                <svg class="w-5 h-5 mr-3 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                <span class="font-semibold">Retail POS</span>
+            </a>
+            <a href="/distribution" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group relative">
+                <svg class="w-5 h-5 mr-3 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <span class="font-semibold">Distribution Khata</span>
+            </a>
+            <a href="/inventory" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
+                <svg class="w-5 h-5 mr-3 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                <span class="font-semibold">Live Inventory</span>
+            </a>
+            <a href="/reports" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
+                <svg class="w-5 h-5 mr-3 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span class="font-semibold">Analytics & Reports</span>
+            </a>
+        </nav>
+
+        <div class="p-4 mx-4 mb-4 bg-slate-800 rounded-xl border border-slate-700">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">Quick Actions</p>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="window.location.href='/pos'" class="py-2 bg-slate-700 hover:bg-blue-600 text-xs font-bold rounded-lg transition-colors">🛒 New Sale</button>
+                <button onclick="window.location.href='/distribution'" class="py-2 bg-slate-700 hover:bg-purple-600 text-xs font-bold rounded-lg transition-colors">🚚 Dispatch</button>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-slate-800">
+            <button id="logoutBtn" class="w-full flex items-center justify-center px-4 py-3 text-red-400 bg-slate-950 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold shadow-inner border border-slate-800">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Secure Lock
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        
+        <header class="h-20 glass-panel shadow-sm flex items-center justify-between px-6 lg:px-10 z-10 border-b border-gray-100 sticky top-0">
+            <div class="flex items-center">
+                <button id="mobileMenuBtn" class="lg:hidden mr-4 text-gray-600 hover:text-blue-600 focus:outline-none p-1 bg-gray-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <img src="/static/logo.png" alt="Logo" class="h-8 w-8 object-contain mr-3 lg:hidden" onerror="this.style.display='none'">
+                <div>
+                    <h2 class="text-xl lg:text-2xl font-black text-gray-900 tracking-tight" id="greeting">Loading...</h2>
+                    <p class="text-xs lg:text-sm text-gray-500 font-bold" id="currentDate">--</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 lg:space-x-5">
+                <div class="relative cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors" onclick="window.location.href='/inventory'">
+                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    <span id="headerAlertDot" class="absolute top-1 right-1 flex h-3 w-3 hidden"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span></span>
+                </div>
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-black shadow-md border-2 border-white ring-2 ring-gray-100" id="userAvatar">A</div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50/50 p-4 lg:p-8">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-4 lg:gap-6 mb-8">
+                
+                <div class="bg-white rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-green-200 transition-all group">
+                    <div>
+                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Today's Revenue</p>
+                        <h3 class="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight" id="kpi-revenue"><span class="animate-pulse bg-gray-200 text-transparent rounded">₹00,000</span></h3>
+                    </div>
+                    <div class="p-3 lg:p-4 bg-green-50 text-green-500 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                </div>
+
+                <div class="bg-gradient-to-br from-white to-red-50/30 rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-red-200 transition-all cursor-pointer group" onclick="window.location.href='/distribution'">
+                    <div>
+                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Market Khata (Pending)</p>
+                        <h3 class="text-2xl lg:text-3xl font-black text-red-600 tracking-tight" id="kpi-khata"><span class="animate-pulse bg-red-100 text-transparent rounded">₹00,000</span></h3>
+                    </div>
+                    <div class="p-3 lg:p-4 bg-red-100 text-red-600 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-5 lg:p-6 shadow-md border border-indigo-500 flex items-center justify-between text-white relative overflow-hidden group">
+                    <div class="z-10">
+                        <p class="text-xs font-black text-blue-200 uppercase tracking-widest mb-1">Net Cashflow</p>
+                        <h3 class="text-2xl lg:text-3xl font-black tracking-tight" id="kpi-profit"><span class="animate-pulse bg-blue-500/50 text-transparent rounded">₹00,000</span></h3>
+                    </div>
+                    <div class="p-3 lg:p-4 bg-white/20 backdrop-blur-sm text-white rounded-xl z-10 group-hover:rotate-12 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div>
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-purple-200 transition-all cursor-pointer group" onclick="window.location.href='/distribution'">
+                    <div>
+                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Pending Drops</p>
+                        <h3 class="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight" id="kpi-deliveries"><span class="animate-pulse bg-gray-200 text-transparent rounded">00</span></h3>
+                    </div>
+                    <div class="p-3 lg:p-4 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg></div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-orange-200 transition-all cursor-pointer group" onclick="window.location.href='/inventory'">
+                    <div>
+                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Low Stock Alerts</p>
+                        <h3 class="text-2xl lg:text-3xl font-black text-orange-500 tracking-tight" id="kpi-alerts"><span class="animate-pulse bg-orange-100 text-transparent rounded">00</span></h3>
+                    </div>
+                    <div class="p-3 lg:p-4 bg-orange-50 text-orange-500 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:col-span-2 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-black text-gray-800">Gross Revenue Trend</h3>
+                        <a href="/reports" class="text-sm text-blue-600 font-bold hover:underline bg-blue-50 px-3 py-1 rounded-lg">View Full Report</a>
+                    </div>
+                    <div class="relative flex-1 w-full min-h-[250px]">
+                        <canvas id="weeklySalesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
+                    <h3 class="text-lg font-black text-gray-800 mb-6">Daily Outflows (Expenses)</h3>
+                    <div class="relative flex-1 w-full min-h-[200px] flex justify-center">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                    <div id="expenseLegend" class="mt-6 flex flex-wrap justify-center gap-2"></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-10">
+                <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/80">
+                    <h3 class="text-lg font-black text-gray-800">Live Transaction Feed</h3>
+                    <button onclick="window.location.href='/reports'" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs font-black shadow-sm hover:bg-gray-50 transition-colors uppercase tracking-wider">Audit Log</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr class="bg-white text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100">
+                                <th class="px-6 py-4 font-black">Time</th>
+                                <th class="px-6 py-4 font-black">Details / Items</th>
+                                <th class="px-6 py-4 font-black">Settlement</th>
+                                <th class="px-6 py-4 font-black text-right">Invoice Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentTransactionsTable" class="text-sm divide-y divide-gray-50">
+                            <tr class="animate-pulse bg-gray-50"><td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-16"></div></td><td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-48"></div></td><td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-16"></div></td><td class="px-6 py-4 flex justify-end"><div class="h-4 bg-gray-200 rounded w-20"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

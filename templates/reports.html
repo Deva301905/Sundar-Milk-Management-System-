@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/static/logo.png">
+    <title>Reports & Audits - Sundar Milk Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 h-screen flex overflow-hidden">
+
+    <aside class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 hidden md:flex z-20 shadow-2xl" id="sidebar">
+        <div class="h-20 flex items-center px-6 border-b border-slate-800 bg-slate-950">
+            <div class="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-blue-500/30">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h1 class="text-xl font-black tracking-wider">SUNDAR<span class="text-blue-400">MILK</span></h1>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="/" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="font-semibold">Overview</span>
+            </a>
+            <a href="/pos" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                <span class="font-semibold">POS Terminal</span>
+            </a>
+            <a href="/inventory" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                <span class="font-semibold">Inventory</span>
+            </a>
+            <a href="/reports" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-md transition-all">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span class="font-bold">Full Reports</span>
+            </a>
+        </nav>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-10 z-10">
+            <div>
+                <h2 class="text-2xl font-black text-gray-800">Financial Reports</h2>
+                <p class="text-sm text-gray-500 font-medium">Audit logs and weekly revenue aggregations</p>
+            </div>
+            <div class="flex gap-4">
+                <button id="exportCsvBtn" class="px-4 py-2 bg-green-50 text-green-700 border border-green-200 rounded-lg font-bold hover:bg-green-100 transition shadow-sm flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Export CSV
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6 lg:p-10 space-y-8">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:col-span-2">
+                    <h3 class="text-lg font-black text-gray-800 mb-4">7-Day Revenue Trend</h3>
+                    <div class="relative h-64 w-full">
+                        <canvas id="weeklyReportChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col justify-center">
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Daily Revenue</p>
+                        <h3 class="text-3xl font-black text-blue-600" id="selectedDailyTotal"><span class="animate-pulse bg-blue-100 text-transparent rounded">₹00,000</span></h3>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col justify-center">
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Transactions</p>
+                        <h3 class="text-3xl font-black text-gray-800" id="selectedDailyCount"><span class="animate-pulse bg-gray-200 text-transparent rounded">000</span></h3>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col justify-center">
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Average Ticket Size</p>
+                        <h3 class="text-3xl font-black text-gray-800" id="selectedDailyAvg"><span class="animate-pulse bg-gray-200 text-transparent rounded">₹000</span></h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center bg-gray-50/50 gap-4">
+                    <h3 class="text-lg font-black text-gray-800">Daily Transaction Ledger</h3>
+                    <div class="flex items-center gap-3">
+                        <label for="reportDate" class="text-sm font-bold text-gray-600">Select Date:</label>
+                        <input type="date" id="reportDate" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none font-bold text-gray-700 bg-white shadow-sm">
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto max-h-96">
+                    <table class="w-full text-left border-collapse" id="reportsTable">
+                        <thead class="bg-white sticky top-0 shadow-sm z-10">
+                            <tr class="text-gray-400 text-xs uppercase tracking-wider">
+                                <th class="px-6 py-4 font-bold border-b border-gray-100">Time</th>
+                                <th class="px-6 py-4 font-bold border-b border-gray-100">Items Bought</th>
+                                <th class="px-6 py-4 font-bold border-b border-gray-100">Payment Mode</th>
+                                <th class="px-6 py-4 font-bold border-b border-gray-100 text-right">Invoice Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody" class="text-sm divide-y divide-gray-50">
+                            <tr><td colspan="4" class="px-6 py-10 text-center text-gray-400 font-medium">Loading ledger records...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/static/js/reports.js"></script>
+</body>
+</html>
