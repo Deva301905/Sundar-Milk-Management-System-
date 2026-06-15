@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/static/logo.png">
-    <title>Live Inventory - Sundar Milk Shop</title>
+    <title>Live Inventory - Shunmuga Milk Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -27,7 +27,7 @@
         <div class="h-24 flex items-center px-6 border-b border-slate-800 bg-slate-950/50">
             <img src="/static/logo.png" alt="Logo" class="h-12 w-12 object-contain rounded-xl mr-3 shadow-lg shadow-blue-500/20 bg-white p-1" onerror="this.outerHTML='<div class=\'h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center mr-3\'><svg class=\'w-7 h-7 text-white\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M13 10V3L4 14h7v7l9-11h-7z\'></path></svg></div>'">
             <div>
-                <h1 class="text-xl font-black tracking-wider leading-tight">SUNDAR<span class="text-blue-400">MILK</span></h1>
+                <h1 class="text-xl font-black tracking-wider leading-tight">SHUNMUGA<span class="text-blue-400">MILK</span></h1>
                 <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Management System</p>
             </div>
             <button id="closeSidebarBtn" class="lg:hidden ml-auto text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -35,19 +35,19 @@
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             <a href="/" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="font-bold">Command Center</span>
+                <span class="font-bold">Home</span>
             </a>
             <a href="/pos" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                <span class="font-semibold">Retail POS</span>
+                <span class="font-semibold">Bill Center</span>
             </a>
             <a href="/distribution" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group relative">
                 <svg class="w-5 h-5 mr-3 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                <span class="font-semibold">Distribution Khata</span>
+                <span class="font-semibold">Milk Line</span>
             </a>
             <a href="/inventory" class="flex items-center px-4 py-3.5 bg-green-600 text-white rounded-xl shadow-lg shadow-green-600/30 transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                <span class="font-semibold">Live Inventory</span>
+                <span class="font-semibold">Milk Inventory</span>
             </a>
             <a href="/reports" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -70,7 +70,7 @@
                 </div>
             </div>
             <button onclick="window.location.href='/pos'" class="hidden md:flex px-4 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition shadow-sm items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg> Launch POS
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg> Bill Center
             </button>
         </header>
 
@@ -158,10 +158,10 @@
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Unit Type</label>
                                 <select id="unit_type_select" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50 cursor-pointer font-medium">
                                     <option value="Packet">Packet</option>
-                                    <option value="Liter">Liter</option>
-                                    <option value="Box">Box</option>
+                                    <option value="100ml">100ml</option>
                                     <option value="200ml">200ml</option>
                                     <option value="500ml">500ml</option>
+                                    <option value="1 Liter">1 Liter</option>
                                     <option disabled>──────────</option>
                                     <option value="custom" class="font-bold text-green-600 bg-green-50">➕ ADD NEW...</option>
                                 </select>
@@ -192,7 +192,7 @@
                         <input type="hidden" id="form_mode" value="add">
 
                         <button type="submit" id="submitStockBtn" class="w-full bg-slate-900 text-white font-black text-lg py-4 rounded-xl hover:bg-slate-800 shadow-md transition-transform transform active:scale-95 mt-6 border border-slate-700">
-                            + ADD TO WAREHOUSE
+                            + Add Items
                         </button>
                     </form>
                 </section>

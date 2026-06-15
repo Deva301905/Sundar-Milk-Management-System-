@@ -66,3 +66,32 @@ def auth_status():
         return jsonify({"logged_in": True, "user": session['user']}), 200
     
     return jsonify({"logged_in": False}), 401
+
+@auth_bp.route('/update-password', methods=['POST'])
+def update_password():
+    """Securely updates the logged-in user's password."""
+    # Ensure the user is actually logged in
+    if 'user' not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+        
+    data = request.json
+    current_password = data.get("current_password")
+    new_password = data.get("new_password")
+    
+    username = session['user']
+    user_record = users_collection.find_one({"username": username})
+    
+    # FIX 1: Use check_password_hash to securely verify the current password
+    if not user_record or not check_password_hash(user_record.get("password"), current_password):
+        return jsonify({"error": "Incorrect current password"}), 400
+        
+    # FIX 2: Hash the NEW password before saving it to the database
+    hashed_new_password = generate_password_hash(new_password)
+    
+    # Update the password in the database
+    users_collection.update_one(
+        {"username": username},
+        {"$set": {"password": hashed_new_password}}
+    )
+    
+    return jsonify({"message": "Password updated successfully!"}), 200

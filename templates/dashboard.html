@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/static/logo.png">
-    <title>Enterprise Dashboard - Sundar Milk Shop</title>
+    <title>Enterprise Dashboard - Shunmuga Milk Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Check local storage for theme preference BEFORE page loads to prevent flashing
+        tailwind.config = { darkMode: 'class' };
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -13,9 +22,10 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .dark .glass-panel { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom-color: #1e293b; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 h-screen flex overflow-hidden selection:bg-blue-200">
+<body class="bg-gray-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 h-screen flex overflow-hidden selection:bg-blue-200 transition-colors duration-300">
 
     <div id="sidebarOverlay" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-20 hidden lg:hidden transition-opacity"></div>
 
@@ -24,7 +34,7 @@
         <div class="h-24 flex items-center px-6 border-b border-slate-800 bg-slate-950/50">
             <img src="/static/logo.png" alt="Logo" class="h-12 w-12 object-contain rounded-xl mr-3 shadow-lg shadow-blue-500/20 bg-white p-1" onerror="this.outerHTML='<div class=\'h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center mr-3\'><svg class=\'w-7 h-7 text-white\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M13 10V3L4 14h7v7l9-11h-7z\'></path></svg></div>'">
             <div>
-                <h1 class="text-xl font-black tracking-wider leading-tight">SUNDAR<span class="text-blue-400">MILK</span></h1>
+                <h1 class="text-xl font-black tracking-wider leading-tight">SHUNMUGA<span class="text-blue-400">MILK</span></h1>
                 <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Management System</p>
             </div>
             <button id="closeSidebarBtn" class="lg:hidden ml-auto text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -33,19 +43,19 @@
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             <a href="/" class="flex items-center px-4 py-3.5 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-600/30 transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="font-bold">Command Center</span>
+                <span class="font-bold">Home</span>
             </a>
             <a href="/pos" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
-                <span class="font-semibold">Retail POS</span>
+                <span class="font-semibold">Bill Center</span>
             </a>
             <a href="/distribution" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group relative">
                 <svg class="w-5 h-5 mr-3 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                <span class="font-semibold">Distribution Khata</span>
+                <span class="font-semibold">Milk Line</span>
             </a>
             <a href="/inventory" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                <span class="font-semibold">Live Inventory</span>
+                <span class="font-semibold">Milk Inventory</span>
             </a>
             <a href="/reports" class="flex items-center px-4 py-3.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
                 <svg class="w-5 h-5 mr-3 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -61,7 +71,11 @@
             </div>
         </div>
 
-        <div class="p-4 border-t border-slate-800">
+        <div class="p-4 border-t border-slate-800 space-y-2">
+            <button id="openSettingsBtn" class="w-full flex items-center px-4 py-3 text-slate-300 bg-slate-950 hover:text-white rounded-xl transition-all font-bold border border-slate-800 group">
+                <svg class="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                System Settings
+            </button>
             <button id="logoutBtn" class="w-full flex items-center justify-center px-4 py-3 text-red-400 bg-slate-950 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold shadow-inner border border-slate-800">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                 Secure Lock
@@ -70,86 +84,83 @@
     </aside>
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
-        
-        <header class="h-20 glass-panel shadow-sm flex items-center justify-between px-6 lg:px-10 z-10 border-b border-gray-100 sticky top-0">
+        <header class="h-20 glass-panel shadow-sm flex items-center justify-between px-6 lg:px-10 z-10 border-b border-gray-100">
             <div class="flex items-center">
-                <button id="mobileMenuBtn" class="lg:hidden mr-4 text-gray-600 hover:text-blue-600 focus:outline-none p-1 bg-gray-100 rounded-lg">
+                <button id="mobileMenuBtn" class="lg:hidden mr-4 text-gray-600 dark:text-gray-300 focus:outline-none p-1 bg-gray-100 dark:bg-slate-800 rounded-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <img src="/static/logo.png" alt="Logo" class="h-8 w-8 object-contain mr-3 lg:hidden" onerror="this.style.display='none'">
                 <div>
-                    <h2 class="text-xl lg:text-2xl font-black text-gray-900 tracking-tight" id="greeting">Loading...</h2>
-                    <p class="text-xs lg:text-sm text-gray-500 font-bold" id="currentDate">--</p>
+                    <h2 class="text-xl lg:text-2xl font-black text-gray-900 dark:text-white tracking-tight" id="greeting">Loading...</h2>
+                    <p class="text-xs lg:text-sm text-gray-500 dark:text-gray-400 font-bold" id="currentDate">--</p>
                 </div>
             </div>
             <div class="flex items-center space-x-3 lg:space-x-5">
-                <div class="relative cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors" onclick="window.location.href='/inventory'">
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    <span id="headerAlertDot" class="absolute top-1 right-1 flex h-3 w-3 hidden"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span></span>
+                <div class="relative cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors" onclick="window.location.href='/inventory'">
+                    <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    <span id="headerAlertDot" class="absolute top-1 right-1 flex h-3 w-3 hidden"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white dark:border-slate-900"></span></span>
                 </div>
-                <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-black shadow-md border-2 border-white ring-2 ring-gray-100" id="userAvatar">A</div>
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-black shadow-md border-2 border-white dark:border-slate-800 ring-2 ring-gray-100 dark:ring-slate-700" id="userAvatar">A</div>
             </div>
         </header>
 
-        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50/50 p-4 lg:p-8">
+        <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 lg:p-8 transition-colors">
             
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-4 lg:gap-6 mb-8">
-                
-                <div class="bg-white rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-green-200 transition-all group">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 dark:border-slate-700 flex items-center justify-between transition-colors">
                     <div>
                         <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Today's Revenue</p>
-                        <h3 class="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight" id="kpi-revenue"><span class="animate-pulse bg-gray-200 text-transparent rounded">₹00,000</span></h3>
+                        <h3 class="text-2xl lg:text-3xl font-black text-gray-900 dark:text-white" id="kpi-revenue"><span class="animate-pulse bg-gray-200 dark:bg-slate-700 text-transparent rounded">₹00,000</span></h3>
                     </div>
-                    <div class="p-3 lg:p-4 bg-green-50 text-green-500 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                    <div class="p-3 lg:p-4 bg-green-50 dark:bg-green-900/30 text-green-500 rounded-xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
                 </div>
 
-                <div class="bg-gradient-to-br from-white to-red-50/30 rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-red-200 transition-all cursor-pointer group" onclick="window.location.href='/distribution'">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 dark:border-slate-700 flex items-center justify-between transition-colors">
                     <div>
-                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Market Khata (Pending)</p>
-                        <h3 class="text-2xl lg:text-3xl font-black text-red-600 tracking-tight" id="kpi-khata"><span class="animate-pulse bg-red-100 text-transparent rounded">₹00,000</span></h3>
+                        <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Line (Pending)</p>
+                        <h3 class="text-2xl lg:text-3xl font-black text-red-600 dark:text-red-400" id="kpi-khata"><span class="animate-pulse bg-red-100 dark:bg-red-900/50 text-transparent rounded">₹00,000</span></h3>
                     </div>
-                    <div class="p-3 lg:p-4 bg-red-100 text-red-600 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                    <div class="p-3 lg:p-4 bg-red-50 dark:bg-red-900/30 text-red-500 rounded-xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
                 </div>
 
-                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-5 lg:p-6 shadow-md border border-indigo-500 flex items-center justify-between text-white relative overflow-hidden group">
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-5 lg:p-6 shadow-md border border-indigo-500 flex items-center justify-between text-white relative overflow-hidden">
                     <div class="z-10">
                         <p class="text-xs font-black text-blue-200 uppercase tracking-widest mb-1">Net Cashflow</p>
-                        <h3 class="text-2xl lg:text-3xl font-black tracking-tight" id="kpi-profit"><span class="animate-pulse bg-blue-500/50 text-transparent rounded">₹00,000</span></h3>
+                        <h3 class="text-2xl lg:text-3xl font-black" id="kpi-profit"><span class="animate-pulse bg-blue-500/50 text-transparent rounded">₹00,000</span></h3>
                     </div>
-                    <div class="p-3 lg:p-4 bg-white/20 backdrop-blur-sm text-white rounded-xl z-10 group-hover:rotate-12 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div>
+                    <div class="p-3 lg:p-4 bg-white/20 backdrop-blur-sm text-white rounded-xl z-10"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg></div>
                     <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-purple-200 transition-all cursor-pointer group" onclick="window.location.href='/distribution'">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 dark:border-slate-700 flex items-center justify-between cursor-pointer transition-colors" onclick="window.location.href='/distribution'">
                     <div>
                         <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Pending Drops</p>
-                        <h3 class="text-2xl lg:text-3xl font-black text-gray-900 tracking-tight" id="kpi-deliveries"><span class="animate-pulse bg-gray-200 text-transparent rounded">00</span></h3>
+                        <h3 class="text-2xl lg:text-3xl font-black text-gray-900 dark:text-white" id="kpi-deliveries"><span class="animate-pulse bg-gray-200 dark:bg-slate-700 text-transparent rounded">00</span></h3>
                     </div>
-                    <div class="p-3 lg:p-4 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg></div>
+                    <div class="p-3 lg:p-4 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg></div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md hover:border-orange-200 transition-all cursor-pointer group" onclick="window.location.href='/inventory'">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 lg:p-6 shadow-sm border border-gray-100 dark:border-slate-700 flex items-center justify-between cursor-pointer transition-colors" onclick="window.location.href='/inventory'">
                     <div>
                         <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Low Stock Alerts</p>
-                        <h3 class="text-2xl lg:text-3xl font-black text-orange-500 tracking-tight" id="kpi-alerts"><span class="animate-pulse bg-orange-100 text-transparent rounded">00</span></h3>
+                        <h3 class="text-2xl lg:text-3xl font-black text-orange-500" id="kpi-alerts"><span class="animate-pulse bg-orange-100 dark:bg-orange-900/50 text-transparent rounded">00</span></h3>
                     </div>
-                    <div class="p-3 lg:p-4 bg-orange-50 text-orange-500 rounded-xl group-hover:scale-110 transition-transform"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
+                    <div class="p-3 lg:p-4 bg-orange-50 dark:bg-orange-900/30 text-orange-500 rounded-xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:col-span-2 flex flex-col">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 lg:col-span-2 flex flex-col transition-colors">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-black text-gray-800">Gross Revenue Trend</h3>
-                        <a href="/reports" class="text-sm text-blue-600 font-bold hover:underline bg-blue-50 px-3 py-1 rounded-lg">View Full Report</a>
+                        <h3 class="text-lg font-black text-gray-800 dark:text-gray-100">Gross Revenue Trend</h3>
+                        <a href="/reports" class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-3 py-1.5 rounded-lg hover:underline">View Full Report</a>
                     </div>
                     <div class="relative flex-1 w-full min-h-[250px]">
                         <canvas id="weeklySalesChart"></canvas>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
-                    <h3 class="text-lg font-black text-gray-800 mb-6">Daily Outflows (Expenses)</h3>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 flex flex-col transition-colors">
+                    <h3 class="text-lg font-black text-gray-800 dark:text-gray-100 mb-6">Daily Outflows (Expenses)</h3>
                     <div class="relative flex-1 w-full min-h-[200px] flex justify-center">
                         <canvas id="expensesChart"></canvas>
                     </div>
@@ -157,29 +168,79 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-10">
-                <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/80">
-                    <h3 class="text-lg font-black text-gray-800">Live Transaction Feed</h3>
-                    <button onclick="window.location.href='/reports'" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-xs font-black shadow-sm hover:bg-gray-50 transition-colors uppercase tracking-wider">Audit Log</button>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden mb-10 transition-colors">
+                <div class="px-6 py-5 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center bg-gray-50/80 dark:bg-slate-800/80">
+                    <h3 class="text-lg font-black text-gray-800 dark:text-white">Live Transaction Feed</h3>
+                    <button onclick="window.location.href='/reports'" class="px-4 py-2 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-700 dark:text-gray-200 rounded-lg text-xs font-black shadow-sm transition-colors uppercase tracking-wider">Audit Log</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <tr class="bg-white text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100">
+                            <tr class="bg-white dark:bg-slate-800 text-gray-400 dark:text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100 dark:border-slate-700">
                                 <th class="px-6 py-4 font-black">Time</th>
                                 <th class="px-6 py-4 font-black">Details / Items</th>
                                 <th class="px-6 py-4 font-black">Settlement</th>
                                 <th class="px-6 py-4 font-black text-right">Invoice Total</th>
                             </tr>
                         </thead>
-                        <tbody id="recentTransactionsTable" class="text-sm divide-y divide-gray-50">
-                            <tr class="animate-pulse bg-gray-50"><td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-16"></div></td><td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-48"></div></td><td class="px-6 py-4"><div class="h-4 bg-gray-200 rounded w-16"></div></td><td class="px-6 py-4 flex justify-end"><div class="h-4 bg-gray-200 rounded w-20"></div></td></tr>
+                        <tbody id="recentTransactionsTable" class="text-sm divide-y divide-gray-50 dark:divide-slate-700/50">
+                            <tr class="animate-pulse"><td class="px-6 py-4"><div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-16"></div></td><td class="px-6 py-4"><div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-48"></div></td><td class="px-6 py-4"><div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-16"></div></td><td class="px-6 py-4 flex justify-end"><div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-20"></div></td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </main>
+    </div>
+
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity opacity-0 duration-300" id="settingsBackdrop"></div>
+        
+        <div class="absolute inset-y-0 right-0 max-w-md w-full bg-white dark:bg-slate-900 shadow-2xl flex flex-col transition-transform transform translate-x-full duration-300 border-l border-gray-200 dark:border-slate-800" id="settingsPanel">
+            
+            <div class="px-6 py-5 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center bg-gray-50 dark:bg-slate-950">
+                <h2 class="text-xl font-black text-gray-800 dark:text-white flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    System Settings
+                </h2>
+                <button id="closeSettingsBtn" class="p-2 text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors bg-gray-200 dark:bg-slate-800 rounded-full">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-8">
+                
+                <div>
+                    <h3 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">Appearance</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="themeLightBtn" class="py-3 px-4 rounded-xl border-2 font-bold transition-all flex justify-center items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Light
+                        </button>
+                        <button id="themeDarkBtn" class="py-3 px-4 rounded-xl border-2 font-bold transition-all flex justify-center items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg> Dark
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">Security</h3>
+                    <form id="passwordForm" class="space-y-4">
+                        <div id="passwordStatus" class="hidden text-sm font-bold p-3 rounded-lg text-center"></div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-1">Current Password / PIN</label>
+                            <input type="password" id="current_password" required class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-1">New Password / PIN</label>
+                            <input type="password" id="new_password" required class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button type="submit" id="updatePasswordBtn" class="w-full bg-slate-900 dark:bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-slate-800 dark:hover:bg-blue-500 transition-colors">
+                            Update Password
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <script src="/static/js/dashboard.js"></script>
